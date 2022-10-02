@@ -9,12 +9,13 @@
     "Guess the number of the letter above. The training is less effective if you count.";
   let feedback = manual;
 
-  function getRandomLetter(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
+  // return random number between 0 and 25
+  function getRandomLetter() {
+    return Math.floor(Math.random() * 26);
   }
 
   function replaceLetter() {
-    randomNum = getRandomLetter(1, 27);
+    randomNum = getRandomLetter() + 1;
     letter = String.fromCharCode(96 + randomNum);
     console.log(randomNum + letter);
     feedback = manual;
