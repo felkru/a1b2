@@ -9,9 +9,9 @@
     "Guess the number of the letter above. The training is less effective if you count.";
   let feedback = manual;
 
-  // return random number between 0 and 25
+  // return random number between 0 and 24
   function getRandomLetter() {
-    return Math.floor(Math.random() * 26);
+    return Math.floor(Math.random() * 25);
   }
 
   // replace the current letter with a new one
