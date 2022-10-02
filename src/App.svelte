@@ -14,6 +14,7 @@
     return Math.floor(Math.random() * 26);
   }
 
+  // replace the current letter with a new one
   function replaceLetter() {
     randomNum = getRandomLetter() + 1;
     letter = String.fromCharCode(96 + randomNum);
@@ -21,6 +22,7 @@
     feedback = manual;
   }
 
+  // check if the input value is correct and provide appropriate feedback
   function checkAnswer(input) {
     if (input === randomNum) {
       feedback = "✅";
@@ -34,6 +36,7 @@
     }
   }
 
+  // provide the user with a manual to understand the game
   function showAlert() {
     alert(
       "This game is meant to help you navigate dictionaries more effectively. Every letter of the alphabet is assosiated with a number (a=1, b=2, c=...). By learning theses numbers you can compare the number of the letter you are searching for to the number of the current letter."
@@ -42,6 +45,7 @@
 
   showAlert();
   replaceLetter();
+  // check answer every time the number input changes
   $: checkAnswer(inputValue);
 </script>
 
