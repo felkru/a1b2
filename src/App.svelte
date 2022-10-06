@@ -1,7 +1,4 @@
 <script>
-  import svelteLogo from "./assets/svelte.svg";
-  import Counter from "./lib/Counter.svelte";
-
   let inputValue = null;
   let randomNum = 0;
   let letter = "?";
@@ -24,8 +21,17 @@
 
   // check if the input value is correct and provide appropriate feedback
   function checkAnswer(input) {
+    // convert number to letter
+    let letter = String.fromCharCode(96 + randomNum);
+    let currentCount = Number(localStorage.getItem(letter));
+    let updatedCount = currentCount;
+    if (currentCount > 3) {
+      replaceLetter();
+    }
+    localStorage.setItem(letter, updatedCount.toString());
     if (input === randomNum) {
       feedback = "✅";
+      updatedCount++;
       setTimeout(replaceLetter, 500);
     } else if (input == null) {
       feedback = manual;

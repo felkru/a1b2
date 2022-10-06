@@ -9,14 +9,18 @@ function getRandomLetter() {
 }
 
 describe("Letter Test", () => {
+  // repeat getRandomLetter x times and write the result to an array
+  let alphabet = [];
+  let repetitions = 100;
+  let sumOfLetters = 0;
+  for (let i = 0; i < repetitions; i++) {
+    alphabet.push(getRandomLetter()[0]);
+    sumOfLetters += getRandomLetter()[1];
+  }
+  // check if the array contains all letters of the alphabet
+  let alphabetString = alphabet.join("");
+
   it("gives back only and all letters of the alphabet", () => {
-    // repeat getRandomLetter 1000 times and write the result to an array
-    let alphabet = [];
-    for (let i = 0; i < 1000; i++) {
-      alphabet.push(getRandomLetter()[0]);
-    }
-    // check if the array contains all letters of the alphabet
-    let alphabetString = alphabet.join("");
     // expect only all alphabetical characters to be present
     expect(alphabetString).toMatch(/(?=.*a)/);
     expect(alphabetString).toMatch(/(?=.*b)/);
@@ -49,5 +53,9 @@ describe("Letter Test", () => {
     expect(alphabetString).not.toMatch(/(?=.*![a-z])/);
   });
 
-  it.todo("gives back the letters with uniform distribution");
+  it("gives back the letters with uniform distribution", () => {
+    let averageLetter = sumOfLetters / repetitions;
+    expect(averageLetter).toBeGreaterThan(13);
+    expect(averageLetter).toBeLessThan(14);
+  });
 });
