@@ -9,34 +9,40 @@
   let feedback = manual;
   let keystrokes = 0;
   // TODO: remeber the last letter and replace letter, when it's identical to the last one
+  let lastLetter;
 
   // return random number between 0 and 25
-  function getRandomLetter() {
+  function getRandomLetNum() {
     return Math.floor(Math.random() * 26);
   }
 
   // replace the current letter with a new one
   function replaceLetter() {
-    answer = getRandomLetter() + 1;
+    console.groupEnd();
+    answer = getRandomLetNum() + 1;
+    lastLetter = letter;
     letter = String.fromCharCode(96 + answer);
-    console.log(answer + letter);
+    console.group(answer, letter);
     feedback = manual;
-    inputValue = null;
+    // account for the change in input value in the next line, which triggers keystrokes to be incremented to 0
     keystrokes = -1;
+    inputValue = null;
   }
 
   // check if the input value is correct and provide appropriate feedback
   function checkAnswer(input) {
     // increment keystrokes every time the user changes the input
     keystrokes++;
+    console.log(keystrokes);
     // convert input to letter
     let letter = String.fromCharCode(96 + answer);
     // get current knows (first tries in a row)
     // knows are saved in local storage, by the key of their letter
     let currentKnows = Number(localStorage.getItem(letter));
     let updatedKnows = currentKnows;
-    if (currentKnows > 3) {
+    if (currentKnows >= 3 || lastLetter === letter) {
       replaceLetter();
+      console.warn("replaced letter", currentKnows, lastLetter, letter);
     }
     if (input === answer) {
       // when the user guesses correctly tell him so
