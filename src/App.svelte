@@ -133,16 +133,16 @@
   /* styles for tablet and desktop */
   @media (min-width: 768px) {
     h1 {
-      font-size: 10rem;
+      font-size: 8rem;
     }
 
     p {
-      font-size: 3rem;
+      font-size: 2rem;
       line-height: normal;
     }
 
     #numput {
-      font-size: 5rem;
+      font-size: 4rem;
     }
   }
 </style>
