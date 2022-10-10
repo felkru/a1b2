@@ -80,9 +80,6 @@
   replaceLetter();
   // check answer every time the number input changes
   $: checkAnswer(inputValue);
-  console.warn(
-    "This game is still in development and might be subject to breaking changes. You might have to occasionally reset your game data. You can do so by clicking the reset button in the bottom right corner."
-  );
 </script>
 
 <main>
@@ -106,6 +103,8 @@
   #numput {
     padding: 1rem;
     font-size: 2rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
   }
 
   #resetButton {
@@ -129,5 +128,21 @@
   /* Firefox */
   input[type="number"] {
     -moz-appearance: textfield;
+  }
+
+  /* styles for tablet and desktop */
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 10rem;
+    }
+
+    p {
+      font-size: 3rem;
+      line-height: normal;
+    }
+
+    #numput {
+      font-size: 5rem;
+    }
   }
 </style>
