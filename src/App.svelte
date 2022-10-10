@@ -2,12 +2,13 @@
   import { resetLetterStorage } from "./lib/helpers.js";
 
   let inputValue = null;
-  let randomNum = 0;
+  let answer = 0;
   let letter = "?";
   const manual =
     "Guess the number of the letter above. The training is less effective if you count.";
   let feedback = manual;
-  let tries = 0;
+  let keystrokes = 0;
+  // TODO: remeber the last letter and replace letter, when it's identical to the last one
 
   // return random number between 0 and 25
   function getRandomLetter() {
@@ -16,43 +17,50 @@
 
   // replace the current letter with a new one
   function replaceLetter() {
-    randomNum = getRandomLetter() + 1;
-    letter = String.fromCharCode(96 + randomNum);
-    console.log(randomNum + letter);
+    answer = getRandomLetter() + 1;
+    letter = String.fromCharCode(96 + answer);
+    console.log(answer + letter);
     feedback = manual;
     inputValue = null;
-    tries = 0;
+    keystrokes = -1;
   }
 
   // check if the input value is correct and provide appropriate feedback
   function checkAnswer(input) {
-    // increment tries every time the user submits an answer
-    tries++;
+    // increment keystrokes every time the user changes the input
+    keystrokes++;
     // convert input to letter
-    let letter = String.fromCharCode(96 + randomNum);
+    let letter = String.fromCharCode(96 + answer);
+    // get current knows (first tries in a row)
+    // knows are saved in local storage, by the key of their letter
     let currentKnows = Number(localStorage.getItem(letter));
     let updatedKnows = currentKnows;
     if (currentKnows > 3) {
       replaceLetter();
     }
-    if (input === randomNum) {
+    if (input === answer) {
       // when the user guesses correctly tell him so
       feedback = "✅";
-      // check if user did it first try, if so add 1 to its knows in localstorage
-      if (tries === 1 && randomNum < 10) {
+      // check if user did it first try, if so add 1 to its knows & tell him, if not reset knows to 0
+      if (keystrokes === 1 && answer < 10) {
+        feedback = "First try 🎉";
         updatedKnows++;
         localStorage.setItem(letter, updatedKnows.toString());
-      } else if (tries < 3 && randomNum < 9) {
+      } else if (keystrokes < 3 && answer > 9) {
+        feedback = "First try 🎉";
         updatedKnows++;
         localStorage.setItem(letter, updatedKnows.toString());
+      } else {
+        localStorage.setItem(letter, "0");
       }
+      console.log(localStorage);
       // after half a second replace the letter with a new one
       setTimeout(replaceLetter, 500);
     } else if (input == null) {
       feedback = manual;
-    } else if (input > randomNum) {
+    } else if (input > answer) {
       feedback = "➖";
-    } else if (input < randomNum) {
+    } else if (input < answer) {
       feedback = "➕";
     }
   }
@@ -67,13 +75,14 @@
 
   console.log(localStorage);
   if (localStorage.getItem("showAlert") === null) {
-    alert(
-      "This game is meant to help you navigate dictionaries more effectively. Every letter of the alphabet is assosiated with a number (a=1, b=2, c=...). By learning theses numbers you can compare the number of the letter you are searching for to the number of the current letter. By closing this popup you agree to the permanent storage of game data in the browsers local Storage. This is needed so that you do not train letters you already know."
-    );
+    showAlert();
   }
   replaceLetter();
   // check answer every time the number input changes
   $: checkAnswer(inputValue);
+  console.warn(
+    "This game is still in development and might be subject to breaking changes. You might have to occasionally reset your game data. You can do so by clicking the reset button in the bottom right corner."
+  );
 </script>
 
 <main>
