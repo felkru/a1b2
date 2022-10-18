@@ -1,5 +1,7 @@
 <script>
+  import { get_all_dirty_from_scope } from "svelte/internal";
   import { resetLetterStorage } from "./lib/helpers.js";
+  import Modal from "./lib/Modal.svelte";
 
   let inputValue = null;
   let answer = 0;
@@ -8,8 +10,8 @@
     "Guess the number of the letter above. The training is less effective if you count.";
   let feedback = manual;
   let keystrokes = 0;
-  // TODO: remeber the last letter and replace letter, when it's identical to the last one
   let lastLetter;
+  let displayModal;
 
   // return random number between 0 and 25
   function getRandomLetNum() {
@@ -71,31 +73,41 @@
     }
   }
 
-  // provide the user with a manual to understand the game
-  function showAlert() {
-    alert(
-      "This game is meant to help you navigate dictionaries more effectively. Every letter of the alphabet is assosiated with a number (a=1, b=2, c=...). By learning theses numbers you can compare the number of the letter you are searching for to the number of the current letter. By closing this popup you agree to the permanent storage of game data in the browsers local Storage. This is needed so that you do not train letters you already know."
-    );
-    localStorage.setItem("showAlert", "false");
+  function openModal() {
+    displayModal = true;
   }
 
   console.log(localStorage);
-  if (localStorage.getItem("showAlert") === null) {
-    showAlert();
+  if (localStorage.getItem("showAlert") !== "false") {
+    displayModal = true;
   }
   replaceLetter();
   // check answer every time the number input changes
   $: checkAnswer(inputValue);
 </script>
 
+<Modal buttonText="OK" {displayModal}>
+  <h1 slot="header">Alphabet Trainer</h1>
+  <p>
+    This game is meant to help you navigate dictionaries more effectively. Every
+    letter of the alphabet is assosiated with a number (a=1, b=2, c=...). By
+    learning these numbers you can compare the number of the letter you are
+    searching for to the number of the current letter. <br /> By closing this
+    popup, you agree to the permanent storage of game data in the browser's
+    local storage. This is needed so that you do not train letters you already
+    know. If you like the concept, feel free toc heckdk out the
+    <a href="https://home.in.tum.de/~obermeis/alphabet.html">Alphabet Trainer</a
+    > by Stefan Obermeier!
+  </p>
+</Modal>
 <main>
-  <h1>{letter.toLocaleUpperCase()}</h1>
+  <h2>{letter.toLocaleUpperCase()}</h2>
 
   <input id="numput" type="number" bind:value={inputValue} min="1" max="26" />
 
-  <p>{feedback}</p>
+  <p id="feedback">{feedback}</p>
 
-  <button id="instructionsButton" on:click={showAlert}
+  <button id="instructionsButton" on:click={openModal}
     >revisit instructions</button
   >
   <button id="resetButton" on:click={resetLetterStorage}>reset game</button>
@@ -103,7 +115,13 @@
 
 <style>
   h1 {
-    margin: 0;
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 3.2em;
+    line-height: 1.1;
+    margin-bottom: 0;
   }
 
   #numput {
@@ -138,11 +156,11 @@
 
   /* styles for tablet and desktop */
   @media (min-width: 768px) {
-    h1 {
+    h2 {
       font-size: 8rem;
     }
 
-    p {
+    #feedback {
       font-size: 2rem;
       line-height: normal;
     }
