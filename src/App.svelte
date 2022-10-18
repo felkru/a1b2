@@ -95,7 +95,7 @@
     searching for to the number of the current letter. <br /> By closing this
     popup, you agree to the permanent storage of game data in the browser's
     local storage. This is needed so that you do not train letters you already
-    know. If you like the concept, feel free toc heckdk out the
+    know. If you like the concept, feel free to check out the
     <a href="https://home.in.tum.de/~obermeis/alphabet.html">Alphabet Trainer</a
     > by Stefan Obermeier!
   </p>
